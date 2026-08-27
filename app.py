@@ -1,30 +1,23 @@
-import sqlite3
+import mysql.connector
 
-# Database connection
-conn = sqlite3.connect("expenses.db")
+# MySQL Database connection
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Reshma@_21",
+    database="expense_tracker"
+)
+
 cursor = conn.cursor()
 
-# Create table
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS expenses (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date TEXT,
-    category TEXT,
-    amount REAL,
-    description TEXT
-)
-""")
-
-conn.commit()
-
 def add_expense():
-    date = input("Enter date (DD-MM-YYYY): ")
+    date = input("Enter date (YYYY-MM-DD): ")
     category = input("Enter category: ")
     amount = float(input("Enter amount: "))
     description = input("Enter description: ")
 
     cursor.execute(
-        "INSERT INTO expenses (date, category, amount, description) VALUES (?, ?, ?, ?)",
+        "INSERT INTO expenses (expense_date, category, amount, description) VALUES (%s, %s, %s, %s)",
         (date, category, amount, description)
     )
 
@@ -36,6 +29,7 @@ def view_expenses():
     expenses = cursor.fetchall()
 
     print("\n--- All Expenses ---")
+
     for expense in expenses:
         print(expense)
 
@@ -57,4 +51,5 @@ while True:
     else:
         print("Invalid choice!")
 
+cursor.close()
 conn.close()
