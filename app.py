@@ -1,10 +1,14 @@
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # MySQL Database connection
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Reshma@_21",
+    password=os.getenv("MYSQL_PASSWORD"),
     database="expense_tracker"
 )
 
